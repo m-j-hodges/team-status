@@ -1,0 +1,28 @@
+{
+  "name": "team-status",
+  "version": "1.0.0",
+  "description": "An app for finding out the status of your team members.",
+  "main": "server.js",
+  "scripts": {
+    "test": "npm jest",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/m-j-hodges/team-status.git"
+  },
+  "keywords": [
+    "nodejs",
+    "javascript"
+  ],
+  "author": "Matthew Hodges",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/m-j-hodges/team-status/issues"
+  },
+  "homepage": "https://github.com/m-j-hodges/team-status#readme",
+  "dependencies": {
+    "inquirer": "^8.2.4",
+    "jest": "^28.1.3"
+  }
+}
