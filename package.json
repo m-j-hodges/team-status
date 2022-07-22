@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/m-j-hodges/team-status#readme",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
     "inquirer": "^8.2.4",
     "jest": "^28.1.3"
   }
