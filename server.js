@@ -1,48 +1,56 @@
 const inquire = require('inquirer')
 const cheerio = require('cheerio')
-const fs = require('fs')
+const fs = require('fs');
+const { resolve } = require('path');
 const userInput = process.argv[2];
 
 
 
-questionArray = [
+let questionArray = [
   {
     type: 'input',
-  message: `What is your team manager's name?`,
+  message: `What is your team member's name?`,
   name: 'name',
 },
   {
     type: 'input',
-  message: `What is the team manager's employee ID?`,
+  message: `What is the team member's ID?`,
   name: 'empId',
 },
   {
     type: 'input',
-  message: `What is the team manager's e-mail address?`,
+  message: `What is the team member's e-mail address?`,
   name: 'email',
 },
   {
     type: 'input',
-  message: `What is the manager's Github username?`,
+  message: `What is the team member's Github username?`,
   name: 'gitUserName',
 },
   {
     type: 'input',
-  message: `What is the team manager's office number?`,
+  message: `What is the team member's office number?`,
   name: 'officeNum',
 },
 ]
 let Emp1
 let Emp2
 let Emp3
+const questions = [
+  { type:'input',
+  message: `Do you have any other employees you wish to add?`,
+  name: 'additionalEmps'}
+]
 createEmp()
-function createEmp() { inquire.prompt(questionArray)
+function createEmp() { 
+  return new Promise((resolve,reject) => {
+  inquire.prompt(questionArray)
 .then((answers) => {
-    const empName = answers.name
-    const empIdNumber = answers.empId
-    const empEmail = answers.email
-    const empOffNum = answers.officeNum
-    const gitUser = answers.gitUserName
+    let empName = answers.name
+    let empIdNumber = answers.empId
+    let empEmail = answers.email
+    let empOffNum = answers.officeNum
+    let gitUser = answers.gitUserName
     if (Emp1 == undefined) {
     Emp1 = new Person(empName, empEmail, empIdNumber,gitUser,empOffNum);}
     else if (Emp2 == undefined) {
@@ -54,28 +62,35 @@ function createEmp() { inquire.prompt(questionArray)
     
     console.log(Emp1, Emp2, Emp3)
     secondQs()
-  })}
-const questions = [
-  { type:'input',
-  message: `Do you have any other employees you wish to add?`,
-  name: 'additionalEmps'
-}
-]
+    if(Emp1 !== undefined) { resolve(Emp1)}
+    else if(Emp2 !== undefined) {resolve(Emp2)}
+    else if(Emp3 !== undefined) {resolve(Emp3)}
+    else{ 
+      const issue = console.log("error occurred.")
+      reject(issue)}
+  })})}
 
-function secondQs() {inquire.prompt(questions)
+
+function secondQs() {
+  return new Promise((resolve,reject) => {inquire.prompt(questions)
 .then((output) => {
  if (output.additionalEmps == "yes" || output.additionalEmps == "Yes" || output.additionalEmps == "y") {
   createEmp()
-  createCards();
- } else {
-  createCards();
+ } else if(output.additionalEmps == "no") {
+  createCards()
  }
-})}
+ else {
+  reject(console.log("an error has occurred."))
+ }
+
+})})}
 
 function createCards() {
   let htmlFile = './public/roster.html'
   let writeLocation = './public/newFile.html'
   let cardEmp1
+  let cardEmp2
+  let cardEmp3
   let cardData = ``
   if (Emp1 !== undefined) {
   cardEmp1 = `<div class="col-sm-3">
@@ -89,6 +104,19 @@ function createCards() {
     </div>
 </div>`
 cardData += cardEmp1
+}
+  if (Emp2 !== undefined) {
+  cardEmp2 = `<div class="col-sm-3">
+  <div class="card" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">${Emp2.name}</h5>
+      <p class="card-subtitle mb-2 text-muted">${Emp2.empId}</p>
+      <a href="mailto:${Emp2.email}">${Emp2.email}</a>
+      <a class="d-block" href="http://${Emp2.gitUserName}">github username: ${Emp1.gitUserName}</a>
+      <p>Employee office number: ${Emp2.officeNumber}</p>
+    </div>
+</div>`
+cardData += cardEmp2
 }
 
   const htmlToBeWritten = `<!DOCTYPE html>
