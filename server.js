@@ -333,7 +333,12 @@ class Person {
   }
 }
 
+
 function createNewPerson() {
   new Person()
 
 }
+
+module.exports = Engineer
+module.exports = createEngineer;
+module.exports = createCards;

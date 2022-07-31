@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "An app for finding out the status of your team members.",
   "main": "server.js",
+  "jest": {
+    "verbose": true},
   "scripts": {
     "test": "npm jest",
     "start": "node server.js"
